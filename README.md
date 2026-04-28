@@ -1,204 +1,138 @@
-# Hava Durumu Uygulaması
+<div align="center">
 
-Flutter ile geliştirilmiş, hava durumuna ve saate göre dinamik tema değiştiren, yakın çevredeki restoranları ve kafeleri listeleyen mobil/masaüstü uygulama.
+# 🌦️ SkyCast
+
+### Dynamic Weather & Places
+
+*Flutter ile geliştirilmiş, zamana ve hava koşullarına göre değişen dinamik temalarıyla modern bir hava durumu ve mekan keşif uygulaması.*
+
+<br/>
+
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-%2302569B?style=for-the-badge&logo=Flutter&logoColor=white)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.x-%230175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+</div>
 
 ---
 
-## Özellikler
+## ✨ Özellikler
 
-### Hava Durumu
-- Anlık sıcaklık, nem ve rüzgar hızı bilgisi
-- Hava durumunu tanımlayan Türkçe açıklama ve emoji ikon
-- **Şehir arama** — arama çubuğuna şehir adı yazıp Enter ile anlık veri çekme
+### 🌡️ Akıllı Hava Durumu
 
-### Dinamik Tema
-Arka plan gradyanı hem **saate** hem de **hava durumuna** göre otomatik değişir:
+- **Anlık Veriler** — Open-Meteo altyapısıyla sıcaklık, nem, rüzgar hızı ve Türkçe açıklamalar
+- **Hızlı Şehir Arama** — Global ölçekte saniyeler içinde hava durumu takibi
+- **WMO Entegrasyonu** — Dünya Meteoroloji Örgütü kodlarına tam uyumlu ikon ve veri eşlemesi
 
-| Zaman Dilimi | Renk |
+### 🎨 Adaptive UI
+
+Uygulama, **saate** ve **hava koşullarına** göre gerçek zamanlı kimlik değiştirir:
+
+- **Zaman Teması** — Şafaktan gece yarısına 6 farklı gradyan geçişi
+- **Parçacık Animasyonları** — `CustomPainter` + `Ticker` ile 60 FPS yağmur ve kar efektleri
+- **Glassmorphism** — Mekan listesinde buzlu cam (Frosted Glass) panel tasarımı
+
+### 📍 Yerel Keşif (POI)
+
+- **Yakın Mekanlar** — Koordinatlarınıza 2 km içindeki restoran ve kafeleri Overpass API ile listeler
+- **İnteraktif Harita** — `flutter_map` (OpenStreetMap) ile canlı mekan konumları
+- **Navigasyon** — Tek tıkla Google Haritalar yol tarifi
+
+---
+
+## 🛠️ Tech Stack
+
+| Katman | Teknoloji |
 |---|---|
-| Gece (22:00 – 05:00) | Koyu lacivert |
-| Şafak (05:00 – 08:00) | Lacivert → Turuncu → Sarı |
-| Sabah (08:00 – 12:00) | Mavi tonlar |
-| Öğleden Sonra (12:00 – 17:00) | Parlak mavi / turkuaz |
-| Akşam / Gün batımı (17:00 – 20:00) | Mor → Turuncu |
-| Alacakaranlık (20:00 – 22:00) | Koyu mor |
-
-| Hava Durumu | Renk |
-|---|---|
-| Yağmur / Çiseleme | Koyu mavi |
-| Kar | Açık mavi / beyaz |
-| Fırtına | Antrasit / koyu gri |
-| Sis | Gri tonlar |
-
-### Hava Efektleri
-- **Yağmurlu hava**: Çapraz yağmur damlası animasyonu (130 parçacık, 60 FPS)
-- **Karlı hava**: Sinüs dalgasıyla sallanan kar taneleri (65 parçacık, 60 FPS)
-- Efektler `Ticker` + `CustomPainter` ile çizilir; dokunuşu engellемez
-
-### Yakındaki Mekanlar (Alt Panel)
-- Aşağıdan yukarı sürüklenebilen **frosted glass panel**
-- Şehir merkezinden 2 km yarıçapında **restoran** ve **kafe** listesi
-- **Mesafeye göre sıralama** (en yakın önce)
-- Her mekan için: ikon, isim, mutfak türü, adres, puan (yıldız)
-- **`›` butonu** → kart genişler, OpenStreetMap tabanlı **interaktif harita** açılır
-- Mekanın tam koordinatına **kırmızı özel pin** atılır (isim balonu + kuyruk)
-- Harita pinch-zoom ve sürükleme destekli
-- Altta isteğe bağlı **"Google Haritalar'da Aç"** butonu
+| **Framework** | Flutter 3.x & Dart 3.x |
+| **Hava Durumu API** | Open-Meteo (ücretsiz, API key gerektirmez) |
+| **Mekan API** | Overpass API (OpenStreetMap) |
+| **Harita** | `flutter_map` & `latlong2` |
+| **Ağ** | `http` |
+| **Animasyon** | `CustomPainter`, `Ticker`, `AnimatedSize` |
+| **Yardımcılar** | `url_launcher`, `BackdropFilter` |
 
 ---
 
-## Kullanılan API'ler
+## 🚀 Hızlı Başlangıç
 
-| API | Amaç | API Key |
-|---|---|---|
-| [Open-Meteo](https://open-meteo.com) | Anlık hava durumu verisi | Gerekmez |
-| [Open-Meteo Geocoding](https://open-meteo.com/en/docs/geocoding-api) | Şehir adından koordinat | Gerekmez |
-| [Overpass API (OpenStreetMap)](https://overpass-api.de) | Yakın restoran / kafe listesi | Gerekmez |
-| [Google Haritalar](https://maps.google.com) | Mekan konumu görüntüleme | Gerekmez (URL yönlendirme) |
-
-**Tüm API'ler ücretsizdir ve kayıt gerektirmez.**
-
----
-
-## Teknik Yığın
-
-- **Flutter** 3.x / **Dart** 3.x
-- [`http`](https://pub.dev/packages/http) — HTTP istekleri
-- [`flutter_map`](https://pub.dev/packages/flutter_map) — OpenStreetMap tabanlı interaktif harita
-- [`latlong2`](https://pub.dev/packages/latlong2) — Koordinat modeli ve mesafe hesabı
-- [`url_launcher`](https://pub.dev/packages/url_launcher) — Google Haritalar yönlendirme
-- Flutter built-in: `CustomPainter`, `Ticker`, `DraggableScrollableSheet`, `AnimatedSize`, `BackdropFilter`
-
----
-
-## Gereksinimler
-
-- Flutter SDK `^3.0.0`
-- Dart SDK `^3.0.0`
-- macOS, iOS veya Android geliştirme ortamı
-
-Flutter kurulu değilse: [flutter.dev/get-started](https://flutter.dev/get-started)
-
----
-
-## Kurulum
-
-### 1. Depoyu klonlayın
+**Gereksinimler:** Flutter SDK `^3.0.0` ve kararlı bir internet bağlantısı
 
 ```bash
-git clone https://github.com/kullanici/weather_app_flutter.git
+# Depoyu klonla
+git clone https://github.com/KutayMehmetOzkoc/weather_app_flutter.git
 cd weather_app_flutter
-```
 
-### 2. Bağımlılıkları yükleyin
-
-```bash
+# Bağımlılıkları yükle
 flutter pub get
-```
-
-### 3. Uygulamayı çalıştırın
-
-```bash
-# macOS masaüstü
-flutter run -d macos
-
-# iOS simülatör
-flutter run -d ios
-
-# Android emülatör
-flutter run -d android
-
-# Web (Chrome)
-flutter run -d chrome
 
 # Bağlı cihazları listele
 flutter devices
+
+# Uygulamayı başlat
+flutter run
 ```
 
 ---
 
-## Proje Yapısı
+## 🗺️ Proje Mimarisi
 
 ```
-weather_app_flutter/
-├── lib/
-│   ├── main.dart              # Uygulama giriş noktası
-│   ├── home_screen.dart       # Ana ekran — hava + mekan paneli
-│   ├── weather_service.dart   # Open-Meteo API istemcisi + WeatherData modeli
-│   ├── place_service.dart     # Overpass API istemcisi + Place modeli
-│   └── weather_effect.dart    # Yağmur / kar parçacık animasyonu
-├── macos/
-│   └── Runner/
-│       ├── DebugProfile.entitlements   # Ağ izinleri (debug)
-│       └── Release.entitlements        # Ağ izinleri (release)
-├── android/
-├── ios/
-├── web/
-└── pubspec.yaml
+lib/
+├── main.dart             # Giriş noktası ve tema yapılandırması
+├── home_screen.dart      # UI yönetimi ve DraggableSheet entegrasyonu
+├── weather_service.dart  # Hava durumu veri çekme ve modelleme
+├── place_service.dart    # Konum tabanlı mekan arama motoru
+├── weather_effect.dart   # Parçacık simülasyonu (Yağmur / Kar)
+└── models/               # Veri modelleri (Place, WeatherData vb.)
 ```
-
-### Modüller
-
-#### `weather_service.dart`
-- `WeatherData` — şehir, sıcaklık, WMO hava kodu, nem, rüzgar, koordinat
-- `WeatherService.searchCity(name)` — geocoding + hava verisi birleştirir
-
-#### `place_service.dart`
-- `Place` — isim, tür, mutfak, adres, mesafe, koordinat, puan
-- `PlaceService.fetchNearby(lat, lon)` — Overpass API GET, mesafeye göre sıralar
-
-#### `weather_effect.dart`
-- `WeatherEffect` widget — `Ticker` + `CustomPainter` tabanlı parçacık sistemi
-- `effectFromCode(wmoCode)` — WMO kodunu efekt türüne çevirir
-- `WeatherEffectType.rain` / `.snow` / `.none`
-
-#### `home_screen.dart`
-- `HomeScreen` — ana durum yönetimi (weather + places)
-- `_PlaceCard` — genişleyebilir mekan kartı, `AnimatedSize` + Google Maps butonu
 
 ---
 
-## WMO Hava Kodu Eşlemesi
+## 📊 WMO Hava Kodu Eşlemesi
 
-| Kod(lar) | Açıklama | Efekt |
+| Kod Aralığı | Durum | Görsel Efekt |
 |---|---|---|
-| 0 | Açık hava | — |
-| 1, 2, 3 | Parçalı – tam bulutlu | — |
-| 45, 48 | Sis | — |
-| 51–57 | Çiseleme | Yağmur |
-| 61–67 | Yağmur | Yağmur |
-| 71–77 | Kar | Kar |
-| 80–82 | Sağanak | Yağmur |
-| 85, 86 | Kar fırtınası | Kar |
-| 95–99 | Gök gürültülü fırtına | Yağmur |
+| 0 – 3 | Açık / Bulutlu | Temiz Gökyüzü |
+| 51 – 67 | Çiseleme / Yağmur | Yağmur Animasyonu |
+| 71 – 77 | Kar Yağışı | Kar Animasyonu |
+| 95 – 99 | Fırtına | Yoğun Yağmur |
 
 ---
 
-## Release Build
+## 🏗️ Build
 
 ```bash
-# macOS .app
-flutter build macos --release
-
-# Android APK
+# Android (APK)
 flutter build apk --release
 
-# iOS (Mac gerekli)
+# iOS
 flutter build ios --release
+
+# macOS
+flutter build macos --release
 ```
 
----
-
-## Katkı
-
-1. Fork yapın
-2. Feature branch açın (`git checkout -b feature/yeni-ozellik`)
-3. Commit edin (`git commit -m 'feat: yeni özellik ekle'`)
-4. Push edin (`git push origin feature/yeni-ozellik`)
-5. Pull Request açın
+> **macOS notu:** `DebugProfile.entitlements` ve `Release.entitlements` dosyalarında `com.apple.security.network.client` izninin tanımlı olması gerekir.
 
 ---
 
-## Lisans
+## 🤝 Katkıda Bulunma
 
-MIT License — dilediğiniz gibi kullanabilirsiniz.
+1. Projeyi **Fork** edin
+2. Yeni bir özellik dalı açın: `git checkout -b feature/yeni-ozellik`
+3. Değişikliklerinizi commit edin: `git commit -m 'feat: yeni özellik eklendi'`
+4. Dalınıza push yapın: `git push origin feature/yeni-ozellik`
+5. Bir **Pull Request** oluşturun
+
+---
+
+## 📄 Lisans
+
+Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
+
+<div align="center">
+
+Geliştirici: **Kutay Mehmet Özkoç**
+
+</div>
